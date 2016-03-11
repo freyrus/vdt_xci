@@ -8,10 +8,10 @@ dependencies:
   override:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
-    - docker build -t freyrus/vdt_xrecipes .
+    - docker build -t freyrus/vdt_xci .
 test:
   override:
-    - docker run -d -p 80:80 freyrus/vdt_xrecipes; sleep 10
+    - docker run -d -p 80:80 freyrus/vdt_xci; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost
 
 deployment:
@@ -19,4 +19,4 @@ deployment:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push freyrus/vdt_xrecipes
+      - docker push freyrus/vdt_xci
