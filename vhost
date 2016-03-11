@@ -1,0 +1,68 @@
+server {
+    listen  80;
+    server_name localhost;
+    access_log /var/log/nginx/xci.com-access.log;
+    error_log  /var/log/nginx/xci.com-error.log error;
+
+    root  /var/apps/vdt/xci;
+    index index.php index.html index.htm;
+
+    proxy_connect_timeout       600;
+    proxy_send_timeout          600;
+    proxy_read_timeout          600;
+    send_timeout                600;
+
+    gzip on;
+    gzip_disable "msie6";
+    gzip_vary on;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types application/javascript text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    client_body_buffer_size      3m;
+    client_header_buffer_size    16k;
+    large_client_header_buffers  8 8k;
+    fastcgi_buffers              512 16k;
+    fastcgi_buffer_size          512k;
+    fastcgi_busy_buffers_size    512k;
+
+    # Media: images, icons, video, audio, HTC
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+        expires 1M;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    # CSS and Javascript
+    location ~* \.(?:css|js)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    location ~* ^/(uploads|public)/.*\.(php|php5)$ {
+        deny all;
+    }
+
+    location /public/ {
+        expires max;
+        log_not_found off;
+        access_log off;
+        add_header Access-Control-Allow-Origin *;
+        try_files $uri /$uri =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?/$request_uri;
+    }
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+    # Deny .htaccess file access
+    location ~ /\.ht {
+        deny all;
+    }
+}
