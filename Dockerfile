@@ -28,5 +28,4 @@ RUN chmod 0644 /etc/cron.d/hello-cron
 RUN touch /var/log/cron.log
 # Run the command on container startup
 RUN service cron restart
-RUN tail -10 /var/log/cron.log
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
