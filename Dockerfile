@@ -17,5 +17,8 @@ EXPOSE 80
 # Clean up APT when done.
 USER root
 ADD vhost   /etc/nginx/sites-available/default
-#RUN /etc/init.d/nginx restart
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Display version information
+RUN composer --version
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
