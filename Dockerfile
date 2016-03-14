@@ -21,9 +21,9 @@ ADD vhost   /etc/nginx/sites-available/default
 RUN composer --version
 RUN apt-get update && apt-get -y install wget cron
 # Add crontab file in the cron directory
-ADD crontab /etc/cron.d/hello-cron
+ADD crontab /etc/cron.d/jobby
 # Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/hello-cron
+RUN chmod 0644 /etc/cron.d/jobby
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 # Run the command on container startup
