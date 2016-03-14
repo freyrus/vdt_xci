@@ -1,1 +1,1 @@
-* * * * * php /var/apps/vdt/xci/jobby.php >> /var/apps/vdt/xci/logs/jobby.log 2>&1
+* * * * * root php /var/apps/vdt/xci/jobby.php >> /var/apps/vdt/xci/logs/jobby.log 2>&1
