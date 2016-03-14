@@ -17,8 +17,6 @@ EXPOSE 80
 # Clean up APT when done.
 USER root
 ADD vhost   /etc/nginx/sites-available/default
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # Display version information
 RUN composer --version
 RUN apt-get update && apt-get -y install wget cron
@@ -29,5 +27,6 @@ RUN chmod 0644 /etc/cron.d/hello-cron
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 # Run the command on container startup
-CMD cron && tail -f /var/log/cron.log
+RUN service cron restart
+RUN tail -f /var/log/cron.log
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
